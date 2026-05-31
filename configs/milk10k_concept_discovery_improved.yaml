@@ -1,0 +1,51 @@
+# Higher-performing follow-up run for MILK10K concept discovery.
+# Changes from the base run:
+# - sqrt inverse class weights reduce over-correction for extremely rare classes.
+# - train/val refit uses the selected epoch with 10% more training data.
+# - K=100 and top-10 pooling reduce the information bottleneck.
+# - E8 evaluates a sparse hybrid concept bank: MONET + all discovered banks.
+
+metadata_csv: data/MILK10K/MILK10k_Training_Metadata.csv
+groundtruth_csv: data/MILK10K/MILK10k_Training_GroundTruth.csv
+supplement_csv: data/MILK10K/MILK10k_Training_Supplement.csv
+image_dir: data/MILK10K/MILK10k_Training_Input/MILK10k_Training_Input
+output_dir: output/milk10k_concept_discovery_improved
+
+seed: 42
+limit: 0
+models: E1,E2,E3,E4,E5,E6,E7,E8
+
+dinov2_model: vit_small_patch14_dinov2
+pretrained: true
+image_size: 224
+feature_batch_size: 64
+feature_num_workers: 8
+feature_dtype: float16
+amp: true
+force_features: false
+
+k: 100
+topk_pool: 10
+max_patches_for_discovery: 400000
+max_patches_per_image: 128
+kmeans_iters: 25
+kmeans_batch_size: 8192
+activation_batch_size: 128
+pca_dim: 64
+pca_sample_size: 50000
+gmm_iters: 12
+artifact_corr_threshold: 0.2
+
+epochs: 180
+mlp_epochs: 140
+train_batch_size: 256
+lr: 0.001
+weight_decay: 0.0001
+l1: 0.00001
+mlp_hidden: 384
+mlp_dropout: 0.25
+class_weight: true
+class_weight_mode: sqrt_inverse
+effective_num_beta: 0.999
+early_stop_patience: 35
+refit_train_val: true
