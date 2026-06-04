@@ -1,0 +1,40 @@
+annotations_csv: data/skincon/annotations_fitzpatrick17k.csv
+fitzpatrick_metadata_csv: data/skincon/fitzpatrick17k.csv
+image_dir: data/skincon/fitzpatrick17k_images
+output_dir: output/skincon_concept_experiment
+
+seed: 42
+min_target_count: 20
+models: E1,E2,E3,E4,E5,E6,E7
+
+dinov2_model: vit_small_patch14_dinov2
+pretrained: true
+image_size: 224
+feature_batch_size: 64
+feature_num_workers: 4
+feature_dtype: float16
+amp: true
+force_features: false
+
+k: 50
+topk_pool: 5
+max_patches_for_discovery: 200000
+max_patches_per_image: 64
+kmeans_iters: 25
+kmeans_batch_size: 8192
+activation_batch_size: 128
+pca_dim: 64
+pca_sample_size: 50000
+gmm_iters: 12
+
+epochs: 160
+mlp_epochs: 120
+train_batch_size: 256
+lr: 0.001
+weight_decay: 0.0001
+l1: 0.0001
+mlp_hidden: 256
+mlp_dropout: 0.2
+class_weight_mode: sqrt_inverse
+early_stop_patience: 30
+refit_train_val: false
