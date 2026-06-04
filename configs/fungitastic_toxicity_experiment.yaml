@@ -1,0 +1,46 @@
+# FungiTastic toxicity experiment.
+#
+# Unlike the previous mushroom setup, FungiTastic aligns image rows, species
+# metadata, and the poisonous label in one dataset. UCI and Wikipedia labels are
+# not used.
+
+metadata_dir: data/fungitastic/metadata/FungiTastic-Mini
+image_root: data/fungitastic
+output_dir: output/fungitastic_toxicity
+
+seed: 42
+models: F1,F2,F3,F4
+fungitastic_resolution: 300p
+image_size: 224
+
+# Keep the run small enough for quick iteration while preserving official
+# train/val/test splits and reducing class imbalance.
+max_images_per_species_per_split: 60
+negative_to_positive_ratio: 2.0
+min_images_per_species: 5
+require_existing_images: true
+
+dinov2_model: vit_small_patch14_dinov2
+pretrained: true
+feature_batch_size: 64
+feature_num_workers: 4
+feature_dtype: float16
+amp: true
+force_features: false
+
+k: 40
+topk_pool: 5
+max_patches_for_discovery: 120000
+max_patches_per_image: 48
+kmeans_iters: 20
+kmeans_batch_size: 8192
+activation_batch_size: 128
+pca_dim: 64
+
+epochs: 120
+train_batch_size: 256
+lr: 0.001
+weight_decay: 0.0001
+l1: 0.00001
+early_stop_patience: 25
+refit_train_val: true

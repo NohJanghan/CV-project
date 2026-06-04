@@ -1,0 +1,46 @@
+# FungiTastic balanced full-split toxicity experiment using ClosedSet val/test.
+#
+# This keeps all poisonous rows and samples non-poisonous rows at a 2:1 ratio
+# per split. ClosedSet and OpenSet are never merged.
+
+dataset_variant: full
+evaluation_protocol: closedset
+metadata_dir: data/fungitastic/metadata/FungiTastic
+image_root: data/fungitastic
+output_dir: output/fungitastic_full_closedset_toxicity
+
+seed: 42
+models: F1,F2,F3,F4
+fungitastic_resolution: 300p
+image_size: 224
+
+max_images_per_species_per_split: 100000
+negative_to_positive_ratio: 2.0
+min_images_per_species: 5
+require_existing_images: true
+
+dinov2_model: vit_small_patch14_dinov2
+pretrained: true
+feature_batch_size: 128
+feature_num_workers: 6
+feature_dtype: float16
+amp: true
+force_features: false
+store_patch_tokens: false
+
+k: 40
+topk_pool: 5
+max_patches_for_discovery: 160000
+max_patches_per_image: 32
+kmeans_iters: 20
+kmeans_batch_size: 8192
+activation_batch_size: 192
+pca_dim: 64
+
+epochs: 120
+train_batch_size: 512
+lr: 0.001
+weight_decay: 0.0001
+l1: 0.00001
+early_stop_patience: 25
+refit_train_val: true
